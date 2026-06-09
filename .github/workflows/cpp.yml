@@ -144,7 +144,7 @@ jobs:
               export OS_NAME="macos"
           elif [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
               export OS_NAME="linux"
-          elif [[ "${{ matrix.os }}" == "self-hosted"]]; then
+          elif [[ "${{ matrix.os }}" == "self-hosted" ]]; then
               export OS_NAME="linux"
           fi
           if [[ "${{ matrix.container }}" == "ubuntu:22.04" ]]; then
