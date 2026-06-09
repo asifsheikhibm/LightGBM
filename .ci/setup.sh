@@ -43,12 +43,19 @@ else  # Linux
             curl
     fi
     CMAKE_VERSION="3.30.0"
-    curl -O -L \
+    if [[ "$ARCH" == "ppc64le" ]]; then
+        if type -f apt > /dev/null 2>&1; then
+            sudo apt-get install --no-install-recommends -y cmake
+        else
+            sudo yum install -y cmake
+    else
+        curl -O -L \
         "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-${ARCH}.sh" \
-    || exit 1
-    sudo mkdir /opt/cmake || exit 1
-    sudo sh "cmake-${CMAKE_VERSION}-linux-${ARCH}.sh" --skip-license --prefix=/opt/cmake || exit 1
-    sudo ln -sf /opt/cmake/bin/cmake /usr/local/bin/cmake || exit 1
+        || exit 1
+        sudo mkdir /opt/cmake || exit 1
+        sudo sh "cmake-${CMAKE_VERSION}-linux-${ARCH}.sh" --skip-license --prefix=/opt/cmake || exit 1
+        sudo ln -sf /opt/cmake/bin/cmake /usr/local/bin/cmake || exit 1
+    fi
 
     if [[ $IN_UBUNTU_BASE_CONTAINER == "true" ]]; then
         # fixes error "unable to initialize frontend: Dialog"
