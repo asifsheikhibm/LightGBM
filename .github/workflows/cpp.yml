@@ -119,7 +119,7 @@ jobs:
           apt-get install --no-install-recommends -y \
             git
       - name: Trust git cloning LightGBM
-        if: startsWith(matrix.os, 'ubuntu') || matrix.os-display-name == "ppc64le"
+        if: startsWith(matrix.os, 'ubuntu') || matrix.os-display-name == 'ppc64le'
         run: |
           git config --global --add safe.directory "${GITHUB_WORKSPACE}"
       - name: Checkout repository
@@ -129,7 +129,7 @@ jobs:
           persist-credentials: false
           submodules: true
       - name: Setup and run tests on Linux and macOS and ppc64le
-        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || matrix.os-display-name == "ppc64le"
+        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || matrix.os-display-name == 'ppc64le'
         shell: bash
         run: |
           export COMPILER="${{ matrix.compiler }}"
