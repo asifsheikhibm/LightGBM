@@ -48,8 +48,10 @@ else  # Linux
         # added yum install
         if type -f apt > /dev/null 2>&1; then
             sudo apt-get install --no-install-recommends -y cmake
+            gcc --version
         else
             sudo yum install -y cmake
+            gcc --version
         fi
     else
         curl -O -L \
