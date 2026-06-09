@@ -47,9 +47,9 @@ else  # Linux
         # Kitware does not publish ppc64le .sh installers.
         # added yum install
         if type -f apt > /dev/null 2>&1; then
-            sudo apt-get install --no-install-recommends -y cmake=${CMAKE_VERSION}
+            sudo apt-get install --no-install-recommends -y cmake
         else
-            sudo yum install -y cmake-${CMAKE_VERSION}
+            sudo yum install -y cmake
         fi
     else
         curl -O -L \

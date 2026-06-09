@@ -25,6 +25,9 @@ elif [[ $OS_NAME == "linux" ]] && [[ $COMPILER == "clang" ]]; then
 elif [[ $OS_NAME == "linux" ]] && [[ $COMPILER == "clang-17" ]]; then
     export CXX=clang++-17
     export CC=clang-17
+elif [[ $OS_NAME == "linux" ]] && [[ $COMPILER == "gcc" ]]; then
+    export CXX=g++-14
+    export CC=gcc-14
 fi
 
 if [[ $IN_UBUNTU_BASE_CONTAINER == "true" ]]; then
