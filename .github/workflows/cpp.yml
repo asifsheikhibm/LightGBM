@@ -66,7 +66,6 @@ jobs:
             method: ''
             container: null
             os-display-name: 'ppc64le'
-            extra-cmake-args: '-DUSE_ARROW=OFF'
           ###########
           # if-else #
           ###########
@@ -141,7 +140,6 @@ jobs:
           export SANITIZERS="${{ matrix.sanitizers }}"
           export SETUP_CONDA="${{ matrix.setup-conda }}"
           export TASK="${{ matrix.task }}"
-          export EXTRA_CMAKE_ARGS="${{ matrix.extra_cmake_args }}"
           if [[ "${{ matrix.os }}" =~ ^macos ]]; then
               export OS_NAME="macos"
           elif [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then

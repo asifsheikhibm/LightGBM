@@ -77,9 +77,6 @@ if [[ "$TASK" == "cpp-tests" ]]; then
             cmake_args+=("-DENABLED_SANITIZERS=$SANITIZERS")
         fi
     fi
-    if [[ -n "${EXTRA_CMAKE_ARGS:-}" ]]; then
-        cmake_args+=($EXTRA_CMAKE_ARGS)
-    fi
     cmake -B build -S . "${cmake_args[@]}"
     cmake --build build --target testlightgbm -j4 || exit 1
     ./testlightgbm || exit 1
