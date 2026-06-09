@@ -66,6 +66,7 @@ jobs:
             method: ''
             container: null
             os-display-name: 'ppc64le'
+            extra-cmake-args: '-DUSE_ARROW=OFF'
           ###########
           # if-else #
           ###########
