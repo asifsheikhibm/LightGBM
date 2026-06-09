@@ -3,10 +3,12 @@ name: C++
 on:
   push:
     branches:
-      - master
+      - main
+      - ppc64le-support
   pull_request:
     branches:
-      - master
+      - main
+      - ppc64le-support
 
 # automatically cancel in-progress builds if another commit is pushed
 concurrency:
@@ -58,6 +60,12 @@ jobs:
             task: cpp-tests
             compiler: msvc
             container: null
+          - os: self-hosted
+            task: cpp-tests
+            compiler: gcc
+            method: ''
+            container: null
+            os-display-name: 'ppc64le'
           ###########
           # if-else #
           ###########
@@ -83,6 +91,13 @@ jobs:
             python_version: '3.11'
             container: 'ghcr.io/lightgbm-org/lightgbm-vsts-agent:manylinux_2_28_x86_64'
             os-display-name: 'manylinux_2_28'
+          - os: self-hosted
+            task: if-else
+            compiler: gcc
+            python_version: '3.14'
+            setup-conda: 'true'
+            container: null
+            os-display-name: 'ppc64le'
     steps:
       - name: Install packages used by third-party actions
         if: matrix.container == 'ubuntu:22.04'
@@ -104,7 +119,7 @@ jobs:
           apt-get install --no-install-recommends -y \
             git
       - name: Trust git cloning LightGBM
-        if: startsWith(matrix.os, 'ubuntu')
+        if: startsWith(matrix.os, 'ubuntu') || matrix.os-display-name == "ppc64le"
         run: |
           git config --global --add safe.directory "${GITHUB_WORKSPACE}"
       - name: Checkout repository
@@ -113,8 +128,8 @@ jobs:
           fetch-depth: 5
           persist-credentials: false
           submodules: true
-      - name: Setup and run tests on Linux and macOS
-        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu')
+      - name: Setup and run tests on Linux and macOS and ppc64le
+        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || matrix.os-display-name == "ppc64le"
         shell: bash
         run: |
           export COMPILER="${{ matrix.compiler }}"
@@ -128,6 +143,8 @@ jobs:
           if [[ "${{ matrix.os }}" =~ ^macos ]]; then
               export OS_NAME="macos"
           elif [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+              export OS_NAME="linux"
+          elif [[ "${{ matrix.os }}" == "self-hosted"]]; then
               export OS_NAME="linux"
           fi
           if [[ "${{ matrix.container }}" == "ubuntu:22.04" ]]; then

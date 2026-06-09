@@ -168,8 +168,10 @@ elif [[ $TASK == "bdist" ]]; then
             # manylinux tag than we intended)
             if [[ $ARCH == "x86_64" ]]; then
                 PLATFORM="manylinux_2_27_x86_64.manylinux_2_28_x86_64"
-            else
+            elif [[ $ARCH == "aarch64" ]]; then
                 PLATFORM="manylinux2014_aarch64.manylinux_2_17_aarch64"
+            elif [[ $ARCH == "ppc64le" ]]; then
+                PLATFORM="manylinux2014_ppc64le.manylinux_2_17_ppc64le"
             fi
             cp "dist/lightgbm-${LGB_VER}-py3-none-${PLATFORM}.whl" "${BUILD_ARTIFACTSTAGINGDIRECTORY}" || exit 1
         fi

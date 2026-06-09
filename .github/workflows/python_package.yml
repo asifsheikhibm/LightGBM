@@ -3,10 +3,12 @@ name: Python-package
 on:
   push:
     branches:
-      - master
+      - main
+      - ppc64le-support
   pull_request:
     branches:
-      - master
+      - main
+      - ppc64le-support
 
 # automatically cancel in-progress builds if another commit is pushed
 concurrency:
@@ -83,6 +85,40 @@ jobs:
           name: linux-aarch64-wheel
           path: artifacts/*.whl
           if-no-files-found: error
+  test-linux-ppc64le:
+      name: bdist wheel (ppc64le, gcc, Python 3.11)
+      runs-on: [self-hosted, ppc64le]
+      timeout-minutes: 60
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+          with:
+            fetch-depth: 5
+            persist-credentials: false
+            submodules: true
+        - name: Setup and run tests
+          shell: bash
+          env:
+            BUILD_DIRECTORY: ${{ github.workspace }}
+            BUILD_ARTIFACTSTAGINGDIRECTORY: ${{ github.workspace }}/artifacts
+            COMPILER: gcc
+            METHOD: wheel
+            OS_NAME: linux
+            PRODUCES_ARTIFACTS: true
+            PYTHON_VERSION: '3.14'
+            SETUP_CONDA: 'true'
+            TASK: bdist
+          run: |
+            export CONDA=$HOME/miniforge
+            export PATH=$CONDA/bin:$PATH
+            ${{ github.workspace }}/.ci/setup.sh || exit 1
+            ${{ github.workspace }}/.ci/test.sh || exit 1
+        - name: Upload artifacts
+          uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+          with:
+            name: linux-ppc64le-wheel
+            path: artifacts/*.whl
+            if-no-files-found: error
   test:
     # yamllint disable-line rule:line-length
     name: ${{ matrix.task }} ${{ matrix.method }} (${{ matrix.os-display-name || matrix.os }}, ${{ matrix.compiler }}, Python ${{ matrix.python_version }})
@@ -466,6 +502,7 @@ jobs:
     needs:
       - test
       - test-linux-aarch64
+      - test-linux-ppc64le
     runs-on: ubuntu-latest
     # publish whenever a new commit is pushed to 'master'
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -513,6 +550,7 @@ jobs:
       - test-latest-versions
       - test
       - test-linux-aarch64
+      - test-linux-ppc64le
       - test-old-versions
     permissions:
       statuses: read
