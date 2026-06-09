@@ -159,7 +159,7 @@ class ArrowChunkedArrayTest : public testing::Test {
   }
 
   template <>
-  ArrowSchema create_primitive_schema<float>() {
+  ArrowSchema ArrowChunkedArrayTest::create_primitive_schema<float>() {
     ArrowSchema schema;
     schema.format = "f";
     schema.name = nullptr;
@@ -174,7 +174,7 @@ class ArrowChunkedArrayTest : public testing::Test {
   }
 
   template <>
-  ArrowSchema create_primitive_schema<bool>() {
+  ArrowSchema ArrowChunkedArrayTest::create_primitive_schema<bool>() {
     ArrowSchema schema;
     schema.format = "b";
     schema.name = nullptr;
