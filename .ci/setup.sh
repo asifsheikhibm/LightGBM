@@ -45,6 +45,7 @@ else  # Linux
     CMAKE_VERSION="3.30.0"
     if [[ "$ARCH" == "ppc64le" ]]; then
         # Kitware does not publish ppc64le .sh installers.
+        # added yum install
         if type -f apt > /dev/null 2>&1; then
             sudo apt-get install --no-install-recommends -y cmake==${CMAKE_VERSION}
         else
