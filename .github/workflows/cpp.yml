@@ -62,7 +62,7 @@ jobs:
             container: null
           - os: self-hosted
             task: cpp-tests
-            compiler: gcc
+            compiler: clang
             method: ''
             container: null
             os-display-name: 'ppc64le'

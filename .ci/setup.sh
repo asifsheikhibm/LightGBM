@@ -1,5 +1,5 @@
 #!/bin/bash
-# comment for testing
+
 set -e -E -u -o pipefail
 
 # defaults
