@@ -141,6 +141,7 @@ jobs:
           export SANITIZERS="${{ matrix.sanitizers }}"
           export SETUP_CONDA="${{ matrix.setup-conda }}"
           export TASK="${{ matrix.task }}"
+          export EXTRA_CMAKE_ARGS="${{ matrix.extra_cmake_args }}"
           if [[ "${{ matrix.os }}" =~ ^macos ]]; then
               export OS_NAME="macos"
           elif [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
