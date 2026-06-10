@@ -53,6 +53,17 @@ else  # Linux
             sudo yum install -y cmake
             gcc --version
         fi
+        if [[ $COMPILER == "clang" ]]; then
+            if type -f apt > /dev/null 2>&1; then
+                sudo apt-get install --no-install-recommends -y \
+                    clang \
+                    libomp-dev
+            else
+                sudo yum install -y \
+                    clang \
+                    libomp-devel
+            fi
+        fi
     else
         curl -O -L \
         "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-${ARCH}.sh" \
