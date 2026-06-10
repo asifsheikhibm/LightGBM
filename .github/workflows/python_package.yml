@@ -86,7 +86,7 @@ jobs:
           path: artifacts/*.whl
           if-no-files-found: error
   test-linux-ppc64le:
-    name: bdist wheel (ppc64le, clang, Python 3.11)
+    name: bdist wheel (ppc64le, clang, Python 3.12)
     runs-on: self-hosted
     timeout-minutes: 60
     steps:
@@ -101,11 +101,11 @@ jobs:
         env:
           BUILD_DIRECTORY: ${{ github.workspace }}
           BUILD_ARTIFACTSTAGINGDIRECTORY: ${{ github.workspace }}/artifacts
-          COMPILER: clang
+          COMPILER: gcc
           METHOD: wheel
           OS_NAME: linux
           PRODUCES_ARTIFACTS: true
-          PYTHON_VERSION: '3.11'
+          PYTHON_VERSION: '3.12'
           SETUP_CONDA: 'true'
           TASK: bdist
         run: |
