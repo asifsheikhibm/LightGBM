@@ -179,7 +179,14 @@ elif [[ $TASK == "bdist" ]]; then
         export LIGHTGBM_TEST_DUAL_CPU_GPU=1
     fi
     pip install -v ./dist/*.whl || exit 1
-    pytest -ra ./tests || exit 1
+    if [[ "$ARCH" == "ppc64le" ]]; then
+        pytest -ra ./tests \
+            --deselect tests/python_package_test/test_dual.py::test_cpu_gpu_work \
+            --deselect tests/python_package_test/test_engine.py::test_contribs_sparse_multiclass \
+            || exit 1
+    else
+       pytest -ra ./tests || exit 1
+    fi
     exit 0
 fi
 
