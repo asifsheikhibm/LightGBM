@@ -155,6 +155,7 @@ jobs:
             task: sdist
             compiler: gcc
             python_version: '3.12'
+            os-display-name: 'ppc64le'
           #########################
           # OpenCL-based GPU jobs #
           #########################
@@ -321,7 +322,7 @@ jobs:
           apt-get install --no-install-recommends -y \
             git
       - name: Trust git cloning LightGBM
-        if: startsWith(matrix.os, 'ubuntu')
+        if: startsWith(matrix.os, 'ubuntu') || matrix.os-display-name == 'ppc64le'
         run: |
           git config --global --add safe.directory "${GITHUB_WORKSPACE}"
       - name: Checkout repository
@@ -330,8 +331,8 @@ jobs:
           fetch-depth: 5
           persist-credentials: false
           submodules: true
-      - name: Setup and run tests on Linux and macOS
-        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || endsWith(matrix.os, 'gpu-amd64')
+      - name: Setup and run tests on Linux and macOS and ppc64le
+        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || endsWith(matrix.os, 'gpu-amd64') || matrix.os-display-name == 'ppc64le'
         shell: bash
         run: |
           export COMPILER="${{ matrix.compiler }}"
@@ -347,6 +348,8 @@ jobs:
           then
               export OS_NAME="linux"
               export PATH="/usr/lib64/openmpi/bin:${PATH}"
+          elif [[ "${{ matrix.os }}" == "self-hosted" ]]; then
+              export OS_NAME="linux"
           fi
           export PYTHON_VERSION="${{ matrix.python_version }}"
           export BUILD_DIRECTORY="$GITHUB_WORKSPACE"
