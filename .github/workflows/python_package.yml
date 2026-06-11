@@ -151,6 +151,10 @@ jobs:
             compiler: clang-17
             python_version: '3.14'
             in-ubuntu-base-container: 'true'
+          - os: self-hosted
+            task: sdist
+            compiler: gcc
+            python_version: '3.12'
           #########################
           # OpenCL-based GPU jobs #
           #########################

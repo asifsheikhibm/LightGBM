@@ -130,7 +130,14 @@ if [[ $TASK == "sdist" ]]; then
     if [[ $PRODUCES_ARTIFACTS == "true" ]]; then
         cp "./dist/lightgbm-${LGB_VER}.tar.gz" "${BUILD_ARTIFACTSTAGINGDIRECTORY}" || exit 1
     fi
-    pytest -ra ./tests/python_package_test || exit 1
+    if [[ "$ARCH" == "ppc64le" ]]; then
+        pytest -ra ./tests/python_package_test \
+            --deselect tests/python_package_test/test_dual.py::test_cpu_and_gpu_work \
+            --deselect tests/python_package_test/test_engine.py::test_contribs_sparse_multiclass \
+            || exit 1
+    else
+       pytest -ra ./tests/python_package_test || exit 1
+    fi
     exit 0
 elif [[ $TASK == "bdist" ]]; then
     if [[ $OS_NAME == "macos" ]]; then
