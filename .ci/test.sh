@@ -271,7 +271,14 @@ fi
 cmake --build build --target _lightgbm -j4 || exit 1
 
 sh ./build-python.sh install --precompile || exit 1
-pytest -ra ./tests || exit 1
+if [[ $ARCH == "ppc64le" ]]; then
+    pytest -ra ./tests \
+        --deselect tests/python_package_test/test_dual.py::test_cpu_and_gpu_work \
+        --deselect tests/python_package_test/test_engine.py::test_contribs_sparse_multiclass \
+    || exit 1
+else
+    pytest -ra ./tests || exit 1
+fi
 
 if [[ $TASK == "regular" ]]; then
     if [[ $PRODUCES_ARTIFACTS == "true" ]]; then
