@@ -121,10 +121,24 @@ else  # Linux
                 libopenmpi-dev \
                 openmpi-bin
         else  # in manylinux image
-            sudo yum update -y
-            sudo yum install -y \
-                openmpi-devel \
-            || exit 1
+            if [[ $ARCH == "ppc64le" ]]; then
+                if type -f apt > /dev/null 2>&1; then
+                    sudo apt-get update
+                    sudo apt-get install --no-install-recommends -y \
+                        libopenmpi-dev \
+                        openmpi-bin
+                else
+                    sudo yum update -y
+                    sudo yum install -y \
+                        openmpi-devel \
+                    || exit 1
+                fi
+            else
+                sudo yum update -y
+                sudo yum install -y \
+                    openmpi-devel \
+                || exit 1
+            fi
         fi
     fi
     if [[ $TASK == "gpu" ]]; then

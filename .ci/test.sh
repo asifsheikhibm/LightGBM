@@ -1,5 +1,4 @@
 #!/bin/bash
-#comment for testing
 
 set -e -E -o -u pipefail
 
