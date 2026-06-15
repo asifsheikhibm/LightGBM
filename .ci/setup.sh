@@ -58,10 +58,26 @@ else  # Linux
                 sudo apt-get install --no-install-recommends -y \
                     clang \
                     libomp-dev
+                # Find the LLVM OpenMP library path
+                LLVM_OPENMP_LIB=$(find /usr/lib/llvm-*/lib -name "libomp.so" 2>/dev/null | head -n 1)
+            
+                if [[ -n "$LLVM_OPENMP_LIB" ]]; then
+                    export OpenMP_C_FLAGS="-fopenmp"
+                    export OpenMP_CXX_FLAGS="-fopenmp"
+                    export OpenMP_C_LIB_NAMES="omp"
+                    export OpenMP_CXX_LIB_NAMES="omp"
+                    export OpenMP_omp_LIBRARY="$LLVM_OPENMP_LIB"
+                    echo "Found OpenMP library at: $LLVM_OPENMP_LIB"
+                fi
             else
                 sudo yum install -y \
                     clang \
                     libomp-devel
+                # For yum-based systems, library might be in different location
+                export OpenMP_C_FLAGS="-fopenmp"
+                export OpenMP_CXX_FLAGS="-fopenmp"
+                export OpenMP_C_LIB_NAMES="omp"
+                export OpenMP_CXX_LIB_NAMES="omp"
             fi
         fi
     else
