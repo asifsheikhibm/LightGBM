@@ -58,25 +58,10 @@ else  # Linux
                 sudo apt-get install --no-install-recommends -y \
                     clang \
                     libomp-dev
-                # Find the LLVM OpenMP library path
-                LLVM_OPENMP_LIB=$(find /usr/lib/llvm-*/lib -name "libomp.so" 2>/dev/null | head -n 1)
-                if [[ -n "$LLVM_OPENMP_LIB" ]]; then
-                    LLVM_ROOT=$(dirname "$(dirname "$LLVM_OPENMP_LIB")")
-                    export OpenMP_ROOT="$LLVM_ROOT"
-                    echo "Set OpenMP_ROOT=$OpenMP_ROOT"
-                fi
-                # debug line
-                echo "LLVM_OPENMP_LIB=${LLVM_OPENMP_LIB}"
-                ls -la /usr/lib/llvm-*/lib/libomp.so 2>&1
             else
                 sudo yum install -y \
                     clang \
                     libomp-devel
-                # For yum-based systems, library might be in different location
-                export OpenMP_C_FLAGS="-fopenmp"
-                export OpenMP_CXX_FLAGS="-fopenmp"
-                export OpenMP_C_LIB_NAMES="omp"
-                export OpenMP_CXX_LIB_NAMES="omp"
             fi
         fi
     else
