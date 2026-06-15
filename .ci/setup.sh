@@ -60,14 +60,10 @@ else  # Linux
                     libomp-dev
                 # Find the LLVM OpenMP library path
                 LLVM_OPENMP_LIB=$(find /usr/lib/llvm-*/lib -name "libomp.so" 2>/dev/null | head -n 1)
-            
                 if [[ -n "$LLVM_OPENMP_LIB" ]]; then
-                    export OpenMP_C_FLAGS="-fopenmp"
-                    export OpenMP_CXX_FLAGS="-fopenmp"
-                    export OpenMP_C_LIB_NAMES="omp"
-                    export OpenMP_CXX_LIB_NAMES="omp"
-                    export OpenMP_omp_LIBRARY="$LLVM_OPENMP_LIB"
-                    echo "Found OpenMP library at: $LLVM_OPENMP_LIB"
+                    LLVM_ROOT=$(dirname "$(dirname "$LLVM_OPENMP_LIB")")
+                    export OpenMP_ROOT="$LLVM_ROOT"
+                    echo "Set OpenMP_ROOT=$OpenMP_ROOT"
                 fi
             else
                 sudo yum install -y \
