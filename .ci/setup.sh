@@ -65,6 +65,9 @@ else  # Linux
                     export OpenMP_ROOT="$LLVM_ROOT"
                     echo "Set OpenMP_ROOT=$OpenMP_ROOT"
                 fi
+                # debug line
+                echo "LLVM_OPENMP_LIB=${LLVM_OPENMP_LIB}"
+                ls -la /usr/lib/llvm-*/lib/libomp.so 2>&1
             else
                 sudo yum install -y \
                     clang \
