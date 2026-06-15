@@ -63,7 +63,7 @@ jobs:
           - os: self-hosted
             task: cpp-tests
             compiler: clang
-            method: ''
+            method: with-sanitizers
             container: null
             os-display-name: 'ppc64le'
           ###########
