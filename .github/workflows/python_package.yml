@@ -238,6 +238,18 @@ jobs:
             method: source
             python_version: '3.12'
             os-display-name: 'ppc64le'
+          - os: self-hosted
+            task: mpi
+            compiler: gcc
+            method: pip
+            python_version: '3.12'
+            os-display-name: 'ppc64le'
+          - os: self-hosted
+            task: mpi
+            compiler: gcc
+            method: wheel
+            python_version: '3.12'
+            os-display-name: 'ppc64le'
           #####################
           # jobs that create  #
           # release artifacts #
