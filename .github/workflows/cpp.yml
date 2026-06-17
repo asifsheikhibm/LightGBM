@@ -93,7 +93,14 @@ jobs:
           - os: self-hosted
             task: if-else
             compiler: gcc
-            python_version: '3.14'
+            python_version: '3.12'
+            setup-conda: 'true'
+            container: null
+            os-display-name: 'ppc64le'
+          - os: self-hosted
+            task: if-else
+            compiler: clang
+            python_version: '3.12'
             setup-conda: 'true'
             container: null
             os-display-name: 'ppc64le'

@@ -10,6 +10,16 @@ PRODUCES_ARTIFACTS=${PRODUCES_ARTIFACTS:-"false"}
 SANITIZERS=${SANITIZERS:-""}
 
 ARCH=$(uname -m)
+run_pytest(){
+    local test_path="${1:-.}"
+    if [[ $ARCH == 'ppc64le' ]]; then
+        pytest -ra "${test_path}" \
+            --deselect tests/python_package_test/test_dual.py::test_cpu_and_gpu_work \
+        || exit 1
+    else
+       pytest -ra "${test_path}" || exit 1
+    fi
+}
 
 LGB_VER=$(head -n 1 "${BUILD_DIRECTORY}/VERSION.txt")
 
@@ -251,25 +261,13 @@ elif [[ $TASK == "mpi" ]]; then
             --config-settings=cmake.define.USE_MPI=ON \
             "./dist/lightgbm-${LGB_VER}.tar.gz" \
         || exit 1
-        if [[ $ARCH == "ppc64le" ]]; then
-            pytest -ra ./tests \
-                --deselect tests/python_package_test/test_dual.py::test_cpu_and_gpu_work \
-            || exit 1
-        else
-            pytest -ra ./tests/python_package_test || exit 1
-        fi
+        run_pytest ./tests/python_package_test
         exit 0
     elif [[ $METHOD == "wheel" ]]; then
         sh ./build-python.sh bdist_wheel --mpi || exit 1
         sh ./.ci/check-python-dists.sh ./dist || exit 1
         pip install "$(echo "./dist/lightgbm-${LGB_VER}"*.whl)" -v || exit 1
-        if [[ $ARCH == "ppc64le" ]]; then
-            pytest -ra ./tests \
-                --deselect tests/python_package_test/test_dual.py::test_cpu_and_gpu_work \
-            || exit 1
-        else
-            pytest -ra ./tests || exit 1
-        fi
+        run_pytest ./tests
         exit 0
     elif [[ $METHOD == "source" ]]; then
         cmake -B build -S . -DUSE_MPI=ON -DUSE_DEBUG=ON
@@ -281,14 +279,7 @@ fi
 cmake --build build --target _lightgbm -j4 || exit 1
 
 sh ./build-python.sh install --precompile || exit 1
-if [[ $ARCH == "ppc64le" ]]; then
-    pytest -ra ./tests \
-        --deselect tests/python_package_test/test_dual.py::test_cpu_and_gpu_work \
-    || exit 1
-else
-    pytest -ra ./tests || exit 1
-fi
-
+run_pytest ./tests
 if [[ $TASK == "regular" ]]; then
     if [[ $PRODUCES_ARTIFACTS == "true" ]]; then
         if [[ $OS_NAME == "macos" ]]; then
