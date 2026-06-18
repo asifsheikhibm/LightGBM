@@ -368,7 +368,7 @@ jobs:
         with:
           environments: ${{ matrix.pixi-env }}
       - name: Setup and run tests on Linux and macOS
-        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || endsWith(matrix.os, 'gpu-amd64')
+        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || endsWith(matrix.os, 'gpu-amd64') || matrix.os-display-name == 'ppc64le'
         shell: bash
         run: |
           export COMPILER="${{ matrix.compiler }}"
