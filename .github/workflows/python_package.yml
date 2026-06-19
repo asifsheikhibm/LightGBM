@@ -156,7 +156,8 @@ jobs:
           - os: self-hosted
             task: sdist
             compiler: gcc
-            python_version: '3.12'
+            python_version: '3.10'
+            pixi-env: 'py310'
             os-display-name: 'ppc64le'
           #########################
           # OpenCL-based GPU jobs #
