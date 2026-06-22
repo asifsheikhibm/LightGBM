@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - ppc64le-support
   pull_request:
     branches:
       - master
