@@ -47,10 +47,10 @@ else  # Linux
         # Kitware does not publish ppc64le .sh installers.
         # added yum install
         if type -f apt > /dev/null 2>&1; then
-            sudo apt-get install --no-install-recommends -y cmake
+            sudo apt-get install --no-install-recommends -y cmake pandoc libomp-dev
             gcc --version
         else
-            sudo yum install -y cmake
+            sudo yum install -y cmake pandoc libomp-devel
             gcc --version
         fi
         if [[ $COMPILER == "clang" ]]; then
