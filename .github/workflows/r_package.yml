@@ -104,6 +104,13 @@ jobs:
             r_version: 4.3
             build_type: cmake
             container: null
+          - os: self-hosted
+            task: r-package
+            compiler: gcc
+            r_version: 4.3
+            build_type: cmake
+            container: null
+            os-display-name: 'ppc64le'
           ###############
           # CRAN builds #
           ###############
@@ -162,7 +169,7 @@ jobs:
           apt-get install --no-install-recommends -y \
             git
       - name: Trust git cloning LightGBM
-        if: startsWith(matrix.os, 'ubuntu')
+        if: startsWith(matrix.os, 'ubuntu') || matrix.os-display-name == 'ppc64le'
         run: |
           git config --global --add safe.directory "${GITHUB_WORKSPACE}"
       - name: Checkout repository
@@ -180,7 +187,7 @@ jobs:
           CTAN_MIRROR: https://ctan.math.illinois.edu/systems/win32/miktex
           TINYTEX_INSTALLER: TinyTeX
       - name: Setup and run tests on Linux and macOS
-        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu')
+        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || matrix.os-display-name == 'ppc64le'
         shell: bash
         run: |
           export TASK="${{ matrix.task }}"
