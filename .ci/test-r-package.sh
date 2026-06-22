@@ -41,6 +41,7 @@ if [[ $OS_NAME == "linux" ]]; then
         # Install R from Ubuntu's default repo instead
         sudo apt-get update
         sudo apt-get install --no-install-recommends -y \
+            r-base \
             r-base-core \
             r-base-dev \
             devscripts \
