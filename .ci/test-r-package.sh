@@ -36,22 +36,15 @@ fi
 #
 # `devscripts` is required for 'checkbashisms' (https://github.com/r-lib/actions/issues/111)
 if [[ $OS_NAME == "linux" ]]; then
-    mkdir -p ~/.gnupg
-    echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
-    sudo apt-key adv \
-        --homedir ~/.gnupg \
-        --keyserver keyserver.ubuntu.com \
-        --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 || exit 1
-    sudo add-apt-repository \
-        "deb ${CRAN_MIRROR}/bin/linux/ubuntu ${R_APT_REPO}" || exit 1
-    sudo apt-get update
-    sudo apt-get install \
-        --no-install-recommends \
-        -y \
+    if [[ $ARCH == "ppc64le" ]]; then
+        # CRAN does not publish pre-built R binaries for ppc64le
+        # Install R from Ubuntu's default repo instead
+        sudo apt-get update
+        sudo apt-get install --no-install-recommends -y \
+            r-base \
+            r-base-dev \
             devscripts \
             libuv1-dev \
-            r-base-core=${R_LINUX_VERSION} \
-            r-base-dev=${R_LINUX_VERSION} \
             texinfo \
             texlive-latex-extra \
             texlive-latex-recommended \
@@ -59,15 +52,41 @@ if [[ $OS_NAME == "linux" ]]; then
             texlive-fonts-extra \
             tidy \
             qpdf \
-            || exit 1
-
-    if [[ $R_BUILD_TYPE == "cran" ]]; then
+        || exit 1
+    else
+        mkdir -p ~/.gnupg
+        echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
+        sudo apt-key adv \
+            --homedir ~/.gnupg \
+            --keyserver keyserver.ubuntu.com \
+            --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 || exit 1
+        sudo add-apt-repository \
+            "deb ${CRAN_MIRROR}/bin/linux/ubuntu ${R_APT_REPO}" || exit 1
+        sudo apt-get update
         sudo apt-get install \
             --no-install-recommends \
             -y \
-                "autoconf=$(cat R-package/AUTOCONF_UBUNTU_VERSION)" \
-                automake \
+                devscripts \
+                libuv1-dev \
+                r-base-core=${R_LINUX_VERSION} \
+                r-base-dev=${R_LINUX_VERSION} \
+                texinfo \
+                texlive-latex-extra \
+                texlive-latex-recommended \
+                texlive-fonts-recommended \
+                texlive-fonts-extra \
+                tidy \
+                qpdf \
                 || exit 1
+
+        if [[ $R_BUILD_TYPE == "cran" ]]; then
+            sudo apt-get install \
+                --no-install-recommends \
+                -y \
+                    "autoconf=$(cat R-package/AUTOCONF_UBUNTU_VERSION)" \
+                    automake \
+                    || exit 1
+        fi
     fi
 fi
 
@@ -165,27 +184,29 @@ bash "${BUILD_DIRECTORY}/.ci/run-r-cmd-check.sh" \
 
 # ensure 'grep --count' doesn't cause failures
 set +e
-
-used_correct_r_version=$(
-    cat $LOG_FILE_NAME \
-    | grep --count "using R version ${R_VERSION}"
-)
-if [[ $used_correct_r_version -ne 1 ]]; then
-    echo "Unexpected R version was used. Expected '${R_VERSION}'."
-    exit 1
-fi
-
-if [[ $R_BUILD_TYPE == "cmake" ]]; then
-    passed_correct_r_version_to_cmake=$(
-        cat $BUILD_LOG_FILE \
-        | grep --count "R version passed into FindLibR.cmake: ${R_VERSION}"
+if [[ $ARCH != "ppc64le" ]]; then
+    used_correct_r_version=$(
+        cat $LOG_FILE_NAME \
+        | grep --count "using R version ${R_VERSION}"
     )
-    if [[ $passed_correct_r_version_to_cmake -ne 1 ]]; then
-        echo "Unexpected R version was passed into cmake. Expected '${R_VERSION}'."
+    if [[ $used_correct_r_version -ne 1 ]]; then
+        echo "Unexpected R version was used. Expected '${R_VERSION}'."
         exit 1
     fi
 fi
 
+if [[ $ARCH == "ppc64le" ]]; then
+    if [[ $R_BUILD_TYPE == "cmake" ]]; then
+        passed_correct_r_version_to_cmake=$(
+            cat $BUILD_LOG_FILE \
+            | grep --count "R version passed into FindLibR.cmake: ${R_VERSION}"
+        )
+        if [[ $passed_correct_r_version_to_cmake -ne 1 ]]; then
+            echo "Unexpected R version was passed into cmake. Expected '${R_VERSION}'."
+            exit 1
+        fi
+    fi
+fi
 # this check makes sure that CI builds of the package actually use OpenMP
 if [[ $OS_NAME == "macos" ]] && [[ $R_BUILD_TYPE == "cran" ]]; then
     omp_working=$(
