@@ -41,8 +41,8 @@ if [[ $OS_NAME == "linux" ]]; then
         # Install R from Ubuntu's default repo instead
         sudo apt-get update
         sudo apt-get install --no-install-recommends -y \
-            r-base-core=${R_LINUX_VERSION} \
-            r-base-dev=${R_LINUX_VERSION} \
+            r-base-core \
+            r-base-dev \
             devscripts \
             libuv1-dev \
             texinfo \

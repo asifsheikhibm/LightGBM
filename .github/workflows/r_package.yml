@@ -108,7 +108,7 @@ jobs:
           - os: self-hosted
             task: r-package
             compiler: gcc
-            r_version: 4.3
+            r_version: 4.6
             build_type: cmake
             container: null
             os-display-name: 'ppc64le'
