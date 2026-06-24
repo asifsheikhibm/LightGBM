@@ -13,8 +13,8 @@ ARCH=$(uname -m)
 run_pytest(){
     local test_path="${1:-.}"
     if [[ $ARCH == 'ppc64le' ]]; then
-        PYTEST_WORKERS=$(($(nproc) / 2))
-        pytest -ra -n 4 --dist loadscope "${test_path}" \
+        # PYTEST_WORKERS=$(($(nproc) / 2))
+        pytest -ra "${test_path}" \
             --deselect tests/python_package_test/test_dual.py::test_cpu_and_gpu_work \
         || exit 1
     else
