@@ -58,6 +58,11 @@ jobs:
             task: cpp-tests
             compiler: msvc
             container: null
+          - os: ubuntu-24.04-ppc64le
+            task: cpp-tests
+            compiler: clang
+            container: null
+            os-display-name: 'ubuntu24.04-ppc64le'
           ###########
           # if-else #
           ###########
@@ -83,6 +88,13 @@ jobs:
             python_version: '3.11'
             container: 'ghcr.io/lightgbm-org/lightgbm-vsts-agent:manylinux_2_28_x86_64'
             os-display-name: 'manylinux_2_28'
+          - os: ubuntu-24.04-ppc64le
+            task: if-else
+            compiler: clang
+            python_version: '3.12'
+            container: null
+            setup-conda: 'true'
+            os-display-name: 'ubuntu24.04-ppc64le'
     steps:
       - name: Install packages used by third-party actions
         if: matrix.container == 'ubuntu:22.04'
@@ -127,7 +139,7 @@ jobs:
           export TASK="${{ matrix.task }}"
           if [[ "${{ matrix.os }}" =~ ^macos ]]; then
               export OS_NAME="macos"
-          elif [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+          elif [[ "${{ matrix.os }}" == "ubuntu-latest" || "${{ matrix.os }}" == "ubuntu-24.04-ppc64le" ]]; then
               export OS_NAME="linux"
           fi
           if [[ "${{ matrix.container }}" == "ubuntu:22.04" ]]; then
