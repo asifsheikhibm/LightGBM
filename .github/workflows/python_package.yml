@@ -329,7 +329,7 @@ jobs:
             method: wheel
             python_version: '3.12'
             os-display-name: 'ppc64le'
-            produces_artifacts: 'true'
+            produces-artifacts: 'true'
             artifact-name: 'linux-ppc64le-wheel'
     steps:
       - name: Install packages used by third-party actions
