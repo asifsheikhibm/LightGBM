@@ -46,9 +46,6 @@ else  # Linux
     # kitware does not publish 3.30.0 .sh installers for ppc64le
     if [[ $ARCH == "ppc64le" ]]; then
         sudo apt-get install --no-install-recommends -y cmake
-        if [[ $COMPILER == "clang" ]]; then
-            sudo apt-get install --no-install-recommends -y clang libomp-dev
-        fi
     else
         curl -O -L \
             "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-${ARCH}.sh" \

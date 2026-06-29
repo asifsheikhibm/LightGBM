@@ -60,7 +60,7 @@ jobs:
             container: null
           - os: ubuntu-24.04-ppc64le
             task: cpp-tests
-            compiler: clang
+            compiler: gcc
             container: null
             os-display-name: 'ubuntu24.04-ppc64le'
           ###########
@@ -88,20 +88,6 @@ jobs:
             python_version: '3.11'
             container: 'ghcr.io/lightgbm-org/lightgbm-vsts-agent:manylinux_2_28_x86_64'
             os-display-name: 'manylinux_2_28'
-          - os: ubuntu-24.04-ppc64le
-            task: if-else
-            compiler: clang
-            python_version: '3.12'
-            container: null
-            setup-conda: 'true'
-            os-display-name: 'ubuntu24.04-ppc64le'
-          - os: ubuntu-24.04-ppc64le
-            task: if-else
-            compiler: gcc
-            python_version: '3.12'
-            container: null
-            setup-conda: 'true'
-            os-display-name: 'ubuntu24.04-ppc64le'
     steps:
       - name: Install packages used by third-party actions
         if: matrix.container == 'ubuntu:22.04'
