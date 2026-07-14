@@ -42,6 +42,7 @@ else  # Linux
             ca-certificates \
             curl
     fi
+    CMAKE_VERSION=3.30.0
     # kitware does not publish 3.30.0 .sh installers for ppc64le
     if [[ $ARCH == "ppc64le" ]]; then
         sudo apt-get install --no-install-recommends -y cmake
@@ -184,7 +185,7 @@ if [[ "${TASK}" != "cpp-tests" ]] && [[ "${TASK}" != "r-package" ]] && [[ "${TAS
             -sL \
             -o miniforge.sh \
             "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-${ARCH}.sh"
-        sh miniforge.sh -b -p "${CONDA}"
+        sh miniforge.sh -b -p -u "${CONDA}"
     fi
     conda config --set always_yes yes --set changeps1 no
     conda update -q -y conda
