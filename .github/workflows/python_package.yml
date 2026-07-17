@@ -325,12 +325,11 @@ jobs:
               export OS_NAME="macos"
           elif \
             [[ "${{ matrix.os }}" == "ubuntu-latest" ]] \
-            || [[ "${{ matrix.os }}" == "github-hosted-linux-gpu-amd64" ]];
+            || [[ "${{ matrix.os }}" == "github-hosted-linux-gpu-amd64" ]] \
+            || [[ "${{ matrix.os }}" == "self-hosted" ]];
           then
               export OS_NAME="linux"
               export PATH="/usr/lib64/openmpi/bin:${PATH}"
-          elif [[ "${{ matrix.os }}" == "self-hosted" ]]; then
-              export OS_NAME="linux"
           fi
           export PYTHON_VERSION="${{ matrix.python_version }}"
           export BUILD_DIRECTORY="$GITHUB_WORKSPACE"
