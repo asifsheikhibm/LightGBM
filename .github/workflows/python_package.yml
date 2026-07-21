@@ -308,7 +308,7 @@ jobs:
       - name: Set up 'pixi' for jobs that need it
         if: matrix.pixi-env != ''
         uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11  # v0.9.6
-        with:matrix.os-display-name == 'ppc64le'
+        with:
           environments: ${{ matrix.pixi-env }}
       - name: Setup and run tests on Linux and macOS
         if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || endsWith(matrix.os, 'gpu-amd64') || matrix.os-display-name == 'ppc64le'
