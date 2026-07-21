@@ -8,6 +8,12 @@ SETUP_CONDA=${SETUP_CONDA:-"true"}
 
 ARCH=$(uname -m)
 
+# When running as root (e.g. inside a manylinux container), 'sudo' is not
+# available and not needed — use a no-op wrapper instead.
+if [[ $(id -u) == "0" ]]; then
+    sudo() { "$@"; }
+    export -f sudo
+fi
 
 if [[ $OS_NAME == "macos" ]]; then
     # Check https://github.com/actions/runner-images/tree/main/images/macos for available
