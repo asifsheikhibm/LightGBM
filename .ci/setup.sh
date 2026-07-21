@@ -36,8 +36,8 @@ else  # Linux
             ca-certificates \
             curl
     else
-        sudo yum update -y
-        sudo yum install -y \
+        yum update -y
+        yum install -y \
             ca-certificates \
             curl
     fi
@@ -48,6 +48,7 @@ else  # Linux
             sudo apt-get install --no-install-recommends -y cmake
         else
             yum install -y cmake
+        fi
     else
         curl -O -L \
             "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-${ARCH}.sh" \
