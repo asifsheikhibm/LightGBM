@@ -8,7 +8,6 @@ on:
   pull_request:
     branches:
       - main
-      - master
       - ppc64le-python-test
 
 # automatically cancel in-progress builds if another commit is pushed
@@ -271,11 +270,10 @@ jobs:
             task: bdist
             compiler: gcc
             method: wheel
+            python_version: '3.12'
             produces-artifacts: 'true'
             artifact-name: 'linux-ppc64le-wheel'
-            python_version: '3.12'
             os-display-name: 'ppc64le'
-
     steps:
       - name: Install packages used by third-party actions
         if: ${{ matrix.in-ubuntu-base-container == 'true' }}
@@ -310,7 +308,7 @@ jobs:
       - name: Set up 'pixi' for jobs that need it
         if: matrix.pixi-env != ''
         uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11  # v0.9.6
-        with:
+        with:matrix.os-display-name == 'ppc64le'
           environments: ${{ matrix.pixi-env }}
       - name: Setup and run tests on Linux and macOS
         if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu') || endsWith(matrix.os, 'gpu-amd64') || matrix.os-display-name == 'ppc64le'
