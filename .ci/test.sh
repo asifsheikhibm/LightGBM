@@ -186,6 +186,7 @@ elif [[ $TASK == "bdist" ]]; then
             export LIGHTGBM_TEST_DUAL_CPU_GPU=0
         else
             export LIGHTGBM_TEST_DUAL_CPU_GPU=1
+        fi
     fi
     pip install -v --no-deps ./dist/*.whl || exit 1
     pytest -ra ./tests || exit 1
