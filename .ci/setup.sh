@@ -47,7 +47,7 @@ else  # Linux
         if type -f apt > /dev/null 2>&1; then
             sudo apt-get install --no-install-recommends -y cmake
         else
-            yum install -y cmake
+            yum install -y cmake gcc gcc-c++
         fi
     else
         curl -O -L \

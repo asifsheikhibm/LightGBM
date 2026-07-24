@@ -120,6 +120,8 @@ jobs:
             --rm \
             --env BUILD_DIRECTORY=${{ env.BUILD_DIRECTORY }} \
             --env BUILD_ARTIFACTSTAGINGDIRECTORY=${{ env.BUILD_DIRECTORY }}/artifacts/ \
+            --env CC="" \
+            --env CXX="" \
             --env COMPILER=gcc \
             --env METHOD=wheel \
             --env OS_NAME=linux \
