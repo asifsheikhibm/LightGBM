@@ -92,7 +92,7 @@ jobs:
     steps:
       - name: Clean workspace
         run: |
-          rm -rf "${GITHUB_WORKSPACE}"
+          sudo rm -rf "${GITHUB_WORKSPACE}"
           mkdir -p "${GITHUB_WORKSPACE}"
       - name: Trust git cloning LightGBM
         run: |
