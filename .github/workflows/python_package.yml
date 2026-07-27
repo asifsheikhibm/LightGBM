@@ -301,7 +301,7 @@ jobs:
             produces-artifacts: 'true'
             artifact-name: 'linux-amd64-wheel'
           - os: self-hosted
-            container: quay.io/pypa/manylinux_2_28_ppc64le
+            container: docker.io/sandeepkgupta12/vsts-agent:manylinux_2_28_ppc64le-ppc64le-image
             os-display-name: manylinux_2_28_ppc64le
             task: bdist
             compiler: gcc

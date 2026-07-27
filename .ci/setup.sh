@@ -36,19 +36,16 @@ else  # Linux
             ca-certificates \
             curl
     else
-        yum update -y
-        yum install -y \
+        sudo yum update -y
+        sudo yum install -y \
             ca-certificates \
             curl
     fi
     CMAKE_VERSION=3.30.0
     # kitware does not publish 3.30.0 .sh installers for ppc64le
     if [[ $ARCH == "ppc64le" ]]; then
-        if type -f apt > /dev/null 2>&1; then
-            sudo apt-get install --no-install-recommends -y cmake
-        else
-            yum install -y cmake gcc gcc-c++
-        fi
+        sudo yum install -y gcc gcc-c++
+        wget https://github.com/Kitware/CMake/releases/download/v3.30.0/cmake-3.30.0.tar.gz && tar -zxvf cmake-3.30.0.tar.gz && cd cmake-3.30.0 && ./bootstrap && make && make install
     else
         curl -O -L \
             "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-${ARCH}.sh" \
