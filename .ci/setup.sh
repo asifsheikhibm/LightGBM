@@ -185,10 +185,10 @@ if [[ "${TASK}" != "cpp-tests" ]] && [[ "${TASK}" != "r-package" ]] && [[ "${TAS
             -sL \
             -o miniforge.sh \
             "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-${ARCH}.sh"
-        sh miniforge.sh -b -p "${CONDA}"
+        sh miniforge.sh -b -u -p "${CONDA}"
     fi
     conda config --set always_yes yes --set changeps1 no
-    conda update -q -u -y conda
+    conda update -q -y conda
 
     # print output of 'conda info', to help in submitting bug reports
     echo "conda info:"
