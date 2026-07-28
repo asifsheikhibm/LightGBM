@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ppc64le-python-test
   pull_request:
     branches:
       - main
