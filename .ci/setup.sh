@@ -44,8 +44,8 @@ else  # Linux
     CMAKE_VERSION=3.30.0
     # kitware does not publish 3.30.0 .sh installers for ppc64le
     if [[ $ARCH == "ppc64le" ]]; then
-        sudo yum install -y gcc gcc-c++ wget cmake
-        # wget https://github.com/Kitware/CMake/releases/download/v3.30.0/cmake-3.30.0.tar.gz && tar -zxvf cmake-3.30.0.tar.gz && cd cmake-3.30.0 && ./bootstrap && make && make install
+        sudo yum install -y gcc gcc-c++ wget
+        wget https://github.com/Kitware/CMake/releases/download/v3.30.0/cmake-3.30.0.tar.gz && tar -zxvf cmake-3.30.0.tar.gz && cd cmake-3.30.0 && ./bootstrap && make && make install
     else
         curl -O -L \
             "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-${ARCH}.sh" \
