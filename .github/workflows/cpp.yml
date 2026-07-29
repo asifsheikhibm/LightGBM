@@ -133,7 +133,7 @@ jobs:
           export TASK="${{ matrix.task }}"
           if [[ "${{ matrix.os }}" =~ ^macos ]]; then
               export OS_NAME="macos"
-          elif [[ "${{ matrix.os }}" == "ubuntu-latest" || "${{ matrix.os-display-name }}" == "ubuntu-24.04-ppc64le" ]]; then
+          elif [[ "${{ matrix.os }}" == "ubuntu-latest" || "${{ matrix.os-display-name }}" == "ubuntu24.04-ppc64le" ]]; then
               export OS_NAME="linux"
           fi
           if [[ "${{ matrix.container }}" == "ubuntu:22.04" ]]; then
