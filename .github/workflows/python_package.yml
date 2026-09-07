@@ -329,7 +329,8 @@ jobs:
           elif \
             [[ "${{ matrix.os }}" == "ubuntu-latest" ]] \
             || [[ "${{ matrix.os }}" == "github-hosted-linux-gpu-amd64" ]] \
-            || [[ "${{ matrix.os }}" == "ubuntu-24.04-ppc64le" ]];
+            || [[ "${{ matrix.os }}" == "ubuntu-24.04-ppc64le" ]] \
+            || [[ "${{ matrix.os }}" == "self-hosted" ]]; \
           then
               export OS_NAME="linux"
               export PATH="/usr/lib64/openmpi/bin:${PATH}"
