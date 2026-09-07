@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ppc64le-flaky
   pull_request:
     branches:
       - main
@@ -264,7 +265,7 @@ jobs:
             produces-artifacts: 'true'
             artifact-name: 'windows-amd64-cli-and-liblightgbm'
             python_version: '3.11'
-          - os: ubuntu-24.04-ppc64le
+          - os: self-hosted
             container: 'ghcr.io/lightgbm-org/lightgbm-ci:ppc64le-manylinux-2_28'
             os-display-name: 'ppc64le-manylinux_2_28'
             task: bdist
